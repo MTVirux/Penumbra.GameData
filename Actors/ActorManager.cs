@@ -3,6 +3,8 @@ using Luna;
 using Penumbra.GameData.Data;
 using Penumbra.GameData.Enums;
 using Penumbra.GameData.Interop;
+using Penumbra.GameData.Structs;
+using Penumbra.String;
 
 namespace Penumbra.GameData.Actors;
 
@@ -43,7 +45,7 @@ public sealed class ActorManager : ActorIdentifierFactory, IDisposable, IAsyncSe
         ObjectManager objects,
         IClientState clientState,
         IGameGui gameGui,
-        CutsceneResolver toParentIdx, 
+        CutsceneResolver toParentIdx,
         IPlayerState playerState)
         : base(objects, framework, data, toParentIdx)
     {
@@ -91,6 +93,14 @@ public sealed class ActorManager : ActorIdentifierFactory, IDisposable, IAsyncSe
     /// <inheritdoc cref="ActorResolver.GetGlamourPlayer"/>
     public ActorIdentifier GetGlamourPlayer()
         => _resolver.GetGlamourPlayer(this);
+
+    /// <inheritdoc cref="ActorResolver.GetPlayerUnchecked(ActorIdentifierFactory,ByteString,WorldId)" />
+    public new ActorIdentifier CreatePlayerUnchecked(ByteString name, WorldId homeWorld)
+        => _resolver.GetPlayerUnchecked(this, name, homeWorld);
+
+    /// <inheritdoc cref="ActorResolver.GetRetainerUnchecked(ActorIdentifierFactory,ByteString,ActorIdentifier.RetainerType)" />
+    public new ActorIdentifier CreateRetainerUnchecked(ByteString name, ActorIdentifier.RetainerType type)
+        => _resolver.GetRetainerUnchecked(this, name, type);
 
     /// <summary> Use stored data to convert an ActorIdentifier to a string with more accurate data. </summary>
     public string ToString(ActorIdentifier id)
